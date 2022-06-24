@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {Job} from "@/api/types"
+import { Job } from "@/api/types";
 
 const getJobs = async () => {
   const baseURL = process.env.VUE_APP_API_URL;
