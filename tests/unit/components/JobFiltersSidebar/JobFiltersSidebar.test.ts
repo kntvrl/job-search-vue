@@ -1,0 +1,34 @@
+import { shallowMount } from "@vue/test-utils";
+
+import { useStore } from "vuex";
+jest.mock("vuex");
+const useStoreMock = useStore as jest.Mock;
+
+import { useRoute } from "vue-router";
+jest.mock("vue-router");
+const useRouteMock = useRoute as jest.Mock;
+
+import JobFitersSidebar from "@/components/JobResults/JobFiltersSidebar/JobFiltersSidebar.vue";
+import { UPDATE_SKILLS_SEARCH_TERM } from "@/store/constants";
+
+describe("JobFiltersSidebar", () => {
+  it("sets up panel for user to filter jobs by one or more criteria", () => {
+    useStoreMock.mockReturnValue({ commit: jest.fn() });
+    useRouteMock.mockReturnValue({
+      query: {},
+    });
+    const wrapper = shallowMount(JobFitersSidebar);
+    expect(wrapper.exists()).toBe(true);
+  });
+  it("reads querry params to filter initial jobs for user", () => {
+    const commit = jest.fn();
+    useStoreMock.mockReturnValue({ commit });
+    useRouteMock.mockReturnValue({
+      query: {
+        role: "Vue",
+      },
+    });
+    shallowMount(JobFitersSidebar);
+    expect(commit).toHaveBeenCalledWith(UPDATE_SKILLS_SEARCH_TERM, "Vue");
+  });
+});
